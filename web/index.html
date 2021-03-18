@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>LockScreen</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta name="referrer" content="no-referrer" />
+    <script type="text/javascript" src="https://cdn.staticfile.org/jquery/1.11.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script type="text/javascript" src="https://www.layuicdn.com/layer-v3.1.1/layer.js"></script>
+    <style>
+* {
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  -ms-box-sizing:border-box;
+  -o-box-sizing:border-box;
+  box-sizing:border-box;
+}
+
+html {
+  width: 100%;
+  height:100%;
+}
+
+body { 
+	width: 100%;
+	height:100%;
+	font-family: 'Open Sans', sans-serif;
+	background: #092756;
+	background: -moz-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%),-moz-linear-gradient(top,  rgba(57,173,219,.25) 0%, rgba(42,60,87,.4) 100%), -moz-linear-gradient(-45deg,  #670d10 0%, #092756 100%);
+	background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -webkit-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -webkit-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+	background: -o-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -o-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -o-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+	background: -ms-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -ms-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -ms-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+	background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), linear-gradient(to bottom,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), linear-gradient(135deg,  #670d10 0%,#092756 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3E1D6D', endColorstr='#092756',GradientType=1 );
+  background-repeat:no-repeat;
+  background-attachment:fixed
+}
+.main{
+	text-align: center; /*让div内部文字居中*/
+	border-radius: 20px;
+	width: 300px;
+	height: 200px;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+a.btn {
+  display: block;
+  margin: 15px 15px 0;
+  padding: .6em 1.1em;
+  font-size: 26px;
+  font-size: 1.625rem;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #fe4365;
+  border-radius: 3px;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  -webkit-box-shadow: 0 0 0 -2px #cff09e, 0 0 0 -1px #fe4365;
+  box-shadow: 0 0 0 -2px #cff09e, 0 0 0 -1px #fe4365;
+  border: none;
+  -webkit-transition: -webkit-box-shadow .3s;
+  transition: box-shadow .3s;
+}
+a.btn:hover, a.btn:focus {
+  -webkit-box-shadow: 0 0 0 2px #cff09e, 0 0 0 4px #ff0364;
+  box-shadow: 0 0 0 2px #cff09e, 0 0 0 4px #ff0364;
+  -webkit-transition-timing-function: cubic-bezier(0.6, 4, 0.3, 0.8);
+  transition-timing-function: cubic-bezier(0.6, 4, 0.3, 0.8);
+  -webkit-animation: gelatine 0.5s 1;
+  animation: gelatine 0.5s 1;
+}
+
+a.btn-secondary {
+  background: #c8c8a9;
+  -webkit-box-shadow: 0 0 0 -2px #cff09e, 0 0 0 -1px #c8c8a9;
+  box-shadow: 0 0 0 -2px #cff09e, 0 0 0 -1px #c8c8a9;
+}
+a.btn-secondary:hover {
+  -webkit-box-shadow: 0 0 0 2px #cff09e, 0 0 0 4px #bebe99;
+  box-shadow: 0 0 0 2px #cff09e, 0 0 0 4px #bebe99;
+}
+
+a.btn:active,
+a.btn-secondary:active {
+  background: #4ecdc4;
+  -webkit-transition-duration: 0;
+  transition-duration: 0;
+  -webkit-box-shadow: 0 0 0 2px #cff09e, 0 0 0 4px #3ac7bd;
+  box-shadow: 0 0 0 2px #cff09e, 0 0 0 4px #3ac7bd;
+}
+ 
+@keyframes gelatine {
+  from, to {
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+  }
+
+  25% {
+    -webkit-transform: scale(0.9, 1.1);
+    transform: scale(0.9, 1.1);
+  }
+
+  50% {
+    -webkit-transform: scale(1.1, 0.9);
+    transform: scale(1.1, 0.9);
+  }
+
+  75% {
+    -webkit-transform: scale(0.95, 1.05);
+    transform: scale(0.95, 1.05);
+  }
+
+  from, to {
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+  }
+
+  25% {
+    -webkit-transform: scale(0.9, 1.1);
+    transform: scale(0.9, 1.1);
+  }
+
+  50% {
+    -webkit-transform: scale(1.1, 0.9);
+    transform: scale(1.1, 0.9);
+  }
+
+  75% {
+    -webkit-transform: scale(0.95, 1.05);
+    transform: scale(0.95, 1.05);
+  }
+}
+
+@-webkit-keyframes gelatine {
+  from, to {
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+  }
+
+  25% {
+    -webkit-transform: scale(0.9, 1.1);
+    transform: scale(0.9, 1.1);
+  }
+
+  50% {
+    -webkit-transform: scale(1.1, 0.9);
+    transform: scale(1.1, 0.9);
+  }
+
+  75% {
+    -webkit-transform: scale(0.95, 1.05);
+    transform: scale(0.95, 1.05);
+  }
+
+  from, to {
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+  }
+
+  25% {
+    -webkit-transform: scale(0.9, 1.1);
+    transform: scale(0.9, 1.1);
+  }
+
+  50% {
+    -webkit-transform: scale(1.1, 0.9);
+    transform: scale(1.1, 0.9);
+  }
+
+  75% {
+    -webkit-transform: scale(0.95, 1.05);
+    transform: scale(0.95, 1.05);
+  }
+}
+  </style>
+  </head>
+  
+  <body>
+  
+    <div class="main">
+      <h2 id="status">Unknown Status</h2>
+      <a class="btn" href="javascript:void(0);" onclick="lockScreen();">Lock Screen</a>
+    </div>
+  
+    <script type="text/javascript">
+      var g_dot_count = 0;
+      var g_add = true;
+      function setStatus(s) {
+        if (g_add) {
+          if (g_dot_count == 6) {
+            g_dot_count = 5;
+            g_add = false;
+          } else {
+            g_dot_count++;
+          }
+        } else {
+          if (g_dot_count == 0) {
+            g_dot_count = 1;
+            g_add = true;
+          } else {
+            g_dot_count--;
+          }
+        }
+        $('#status').html(s + '.'.repeat((g_dot_count)));
+      }
+      function api_post(uri, data, success, error) {
+        var pwd = getPassword();
+        if (pwd == null || pwd == '') {
+          return redirectAuth();
+        }
+        if (data) {
+          $.extend(data, {pwd:pwd});
+        } else {
+          data = {pwd:pwd};
+        }
+        $.ajax({
+          url: uri,
+          type: 'post',
+          data: data,
+          cache: false,
+          timeout: 2000,
+          success: function(res){
+            success && success(res);
+          },
+          error: function(XMLHttpRequest, textStatus){
+            showMsg('Request Error ');
+            error && error();
+          }
+        });
+      }
+      function showMsg(msg) {
+        layer.msg(msg, {offset:'50px'});
+      }
+      function updateLockStatus() {
+        api_post('/is_locked', null, function(res){
+          if (res == '1') {
+            setStatus('Locked');
+          } else if (res == '0') {
+            setStatus('Not Locked');
+          } else {
+            showMsg(res);
+            setStatus('Unknown Status');
+          }
+        }, function(){
+            setStatus('Unknown Status');
+        });
+        return updateLockStatus;
+      }
+      function lockScreen() {
+        api_post('/lock', null, function(res){
+          showMsg(res);
+        });
+      }
+      function inputPassword(success) {
+        layer.prompt({
+          formType: 1,
+          title: '请输入密码',
+          shadeClose: true,
+        }, function(pwd, index, elem){
+          success(pwd);
+          layer.close(index);
+        });
+      }
+      function getPassword() {
+        return $.cookie('pwd');
+      }
+      function savePassword(pwd) {
+        $.cookie('pwd', pwd, { expires: 365, path: '/' });
+      }
+      function redirectAuth() {
+        location.href = '/';
+      }
+      // ready
+      $(function(){
+        // 双击状态 可以输入/修改密码
+        $('#status').dblclick(function(){
+          inputPassword(savePassword);
+        });
+        api_post('/check_password', null, function(res){
+          if (res != 'OK') {
+            redirectAuth();
+          }
+        });
+        // 每隔2s检测一次锁屏状态
+        setInterval(updateLockStatus(), 2000);
+      });
+    </script>
+  
+  </body>
+  
+</html>

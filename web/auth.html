@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>LockScreen</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta name="referrer" content="no-referrer" />
+    <script type="text/javascript" src="https://cdn.staticfile.org/jquery/1.11.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script type="text/javascript" src="https://www.layuicdn.com/layer-v3.1.1/layer.js"></script>
+  </head>
+    
+  <body>
+    <script type="text/javascript">
+      function api_post(uri, data, success, error) {
+        var pwd = getPassword();
+        if (pwd == null || pwd == '') {
+          return;
+        }
+        if (data) {
+          $.extend(data, {pwd:pwd});
+        } else {
+          data = {pwd:pwd};
+        }
+        $.ajax({
+          url: uri,
+          type: 'post',
+          data: data,
+          cache: false,
+          timeout: 2000,
+          success: function(res){
+            success && success(res);
+          },
+          error: function(XMLHttpRequest, textStatus){
+            error ? error() : layer.msg("Request Error", {offset:'50px'});
+          }
+        });
+      }
+      $.extend({
+        StandardPost:function(url,args){
+          var body = $(document.body),
+            form = $("<form method='post'></form>"),
+            input;
+          form.attr({"action":'/'});
+          $.each(args,function(key,value){
+            input = $("<input type='hidden'>");
+            input.attr({"name":key});
+            input.val(value);
+            form.append(input);
+          });
+          form.appendTo(document.body);
+          form.submit();
+          document.body.removeChild(form[0]);
+        }
+      });
+      function inputPassword(success) {
+        layer.prompt({
+          formType: 1,
+          title: '请输入密码',
+          shadeClose: true,
+        }, function(pwd, index, elem){
+          success(pwd);
+          layer.close(index);
+        });
+      }
+      function getPassword() {
+        return $.cookie('pwd');
+      }
+      function savePassword(pwd) {
+        $.cookie('pwd', pwd, { expires: 365, path: '/' });
+      }
+      function inputPasswordAndRedirect() {
+        inputPassword(function(pwd){
+          savePassword(pwd);
+          redirectIndex();
+        });
+      }
+      function redirectIndex() {
+        api_post('/check_password', null, function(res){
+          if (res == 'OK') {
+            $.StandardPost('/', {pwd: getPassword()});
+          } else {
+            inputPasswordAndRedirect();
+          }
+        });
+      }
+      // ready
+      $(function(){
+        // 如果cookie中没有密码，提示输入密码
+        var pwd = getPassword();
+        if (pwd == null || pwd == '') {
+          setTimeout(inputPasswordAndRedirect, 1000);
+        } else {
+          redirectIndex();
+        }
+      });
+    </script>
+  
+  </body>
+  
+</html>
