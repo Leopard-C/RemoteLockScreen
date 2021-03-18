@@ -5,6 +5,8 @@
 + RemoteLockScreen：启动一个服务器，接受指定HTTP请求，锁住电脑屏幕。
 + RemoteLockScreenProtector：守护RemoteLockScreen，同时也被守护。（互相守护），二者中任何一个退出，都会触发锁屏。
 
+使用的C++ HTTP库：[yhirose/cpp-httplib](https://github.com/yhirose/cpp-httplib)
+
 自行修改两个`main.cpp`中的 `文件路径`、`程序名` 等自定义的全局静态参数。如
 
 + `s_index_html`
@@ -15,7 +17,6 @@
 + `s_photo_path`
 
 其实可以写个配置文件读取的功能，将这些参数放在配置文件中（懒）。
-
 
 
 如果电脑IP不固定，或者想通过公网访问电脑，可以考虑`frp`内网穿透。
