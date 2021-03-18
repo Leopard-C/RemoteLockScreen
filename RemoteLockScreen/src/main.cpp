@@ -28,7 +28,7 @@ bool checkLocalhost(const httplib::Request& req, httplib::Response& res);
 
 static const std::string s_index_html = "D:/etc/remote_lock_screen/index.html";
 static const std::string s_auth_html  = "D:/etc/remote_lock_screen/auth.html";
-static const std::string s_password   = "jLiangliu34";
+static const std::string s_password   = "your custom password";
 
 static bool s_should_quit = false;
 static std::atomic_int s_threads_count = 0;
